@@ -1,43 +1,12 @@
 import React, {Component} from 'react'
 import './App.css';
+import Board from './Components/board'
 
-function Cell(props) {
-  let style = {
-    height: 25,
-    width: 25,
-    border: '1px solid black',
-    backgroundColor: 'red'
-  }
-  return (
-    <button style = {style}></button>)
-}
 
-function Row(props) {
-  let array = []
-  let disp = {display: 'flex'}
-  for(let i = 0; i < 5; i++) {
-    array.push(<Cell />)
-  }
-  return (
-    <div style = {disp}>
-      {array}
-    </div> )
-}
-
-function Board(props) {
-  let array = []
-  for(let j = 0; j < 5; j++) {
-    array.push(<Row />)
-  }
-  return (
-    <div>
-      {array}
-    </div>)
-}
-    
 class App extends Component {
   constructor(props) {
     super(props)
+    this.handleClick = this.handleClick.bind(this)
     const mines = {location1: [1,1], location2: [0,2], location3: [2,4], location4: [4,1], location5: [4,2]}
     const winThing = 
           {isMine: false, 
@@ -92,7 +61,8 @@ class App extends Component {
 
 }   //end of constructor
   
-  handleClick() {}
+  handleClick(row, col) {console.log('clicked on-row:', row, "col:", col)}
+  rtClick() {console.log('rt-clicked')}
   render() {
     return(
     <div>
@@ -106,7 +76,7 @@ class App extends Component {
           <span>0</span>
         </div>
       </div>
-      <Board ></Board>
+      <Board handleClick = {this.handleClick} />
       <button className = "restart">Restart</button>
     </div>
     )}
