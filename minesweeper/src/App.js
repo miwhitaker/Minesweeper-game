@@ -7,6 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
+    this.rtClick = this.rtClick.bind(this)
     const mines = {location1: [1,1], location2: [0,2], location3: [2,4], location4: [4,1], location5: [4,2]}
     const winThing = 
           {isMine: false, 
@@ -59,10 +60,11 @@ class App extends Component {
     stateArr[3][1].values.numNearMine = 2
     stateArr[3][3].values.numNearMine = 2
 
+    this.state = stateArr
 }   //end of constructor
   
   handleClick(row, col) {console.log('clicked on-row:', row, "col:", col)}
-  rtClick() {console.log('rt-clicked')}
+  rtClick(row, col) {console.log('rt-clicked on- row:', row, "col: ", col)}
   render() {
     return(
     <div>
@@ -76,7 +78,7 @@ class App extends Component {
           <span>0</span>
         </div>
       </div>
-      <Board handleClick = {this.handleClick} />
+      <Board handleClick = {this.handleClick} rtClick = {this.rtClick}/>
       <button className = "restart">Restart</button>
     </div>
     )}
@@ -84,19 +86,5 @@ class App extends Component {
 
 
 
-/*function App() {
-  return (
-    <div className="App">
-      
-      <header className="App-header">
-        
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        
-      </header>
-    </div>
-  );
-}
-*/
+
 export default App; 

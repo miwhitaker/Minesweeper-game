@@ -8,7 +8,6 @@ export default function Cell(props) {
       backgroundColor: 'red'
     }
     return (
-      <button style = {style} onClick = {() => props.handleClick(props.row, props.col)} ></button>)
+      <button style = {style} onClick = {() => props.handleClick(props.row, props.col)} onContextMenu = {(e) => props.rtClick(props.row, props.col); e.preventDefault()}></button>
   }
 
-  //  
