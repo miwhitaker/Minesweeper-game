@@ -11,17 +11,18 @@ class App extends Component {
     const mines = {location1: [1,1], location2: [0,2], location3: [2,4], location4: [4,1], location5: [4,2]}
     const winThing = 
           {isMine: false, 
-           values: {isClicked: false,
-                    isRtClicked: false,
-                    numNearMine: 0        
-          }}
+            isClicked: false, 
+            isRtClicked: false, 
+            numNearMine: 0,
+            displayMode: "initial"    
+          }
     const stateArr = []
     const tempArr = []
     for(let i = 0; i < 5; i++) {
       tempArr.push(JSON.parse(JSON.stringify(winThing)))
     }
     for(let j = 0; j < 5; j++) {
-      stateArr[j] = JSON.parse(JSON.stringify((tempArr)))
+      stateArr[j] = JSON.parse(JSON.stringify(tempArr))
     }
     //modify this to loop through const mines (location of mines) and change isMine to true
     //hmm...need to extract values [i,j] one at a time and do stateArr[i][j].isMine = true
@@ -44,26 +45,41 @@ class App extends Component {
     //stateArr[i+1][j].values.numNearMines = stateArr[i+1][j].values.numNearMines + 1
     //stateArr[i+1][j+1].values.numNearMines = stateArr[i+1][j+1].values.numNearMines + 1
 
-    stateArr[0][0].values.numNearMine = 1
-    stateArr[0][1].values.numNearMine = 1
-    stateArr[0][3].values.numNearMine = 1
-    stateArr[0][4].values.numNearMine = 1
-    stateArr[3][0].values.numNearMine = 1
-    stateArr[3][2].values.numNearMine = 1
-    stateArr[3][4].values.numNearMine = 1
-    stateArr[4][1].values.numNearMine = 1
-    stateArr[4][3].values.numNearMine = 1
-    stateArr[1][0].values.numNearMine = 2
-    stateArr[1][3].values.numNearMine = 2
-    stateArr[2][1].values.numNearMine = 2
-    stateArr[2][3].values.numNearMine = 2
-    stateArr[3][1].values.numNearMine = 2
-    stateArr[3][3].values.numNearMine = 2
+    stateArr[0][0].numNearMine = 1
+    stateArr[0][1].numNearMine = 1
+    stateArr[0][3].numNearMine = 1
+    stateArr[0][4].numNearMine = 1
+    stateArr[3][0].numNearMine = 1
+    stateArr[3][2].numNearMine = 1
+    stateArr[3][4].numNearMine = 1
+    stateArr[4][1].numNearMine = 1
+    stateArr[4][3].numNearMine = 1
+    stateArr[1][0].numNearMine = 2
+    stateArr[1][3].numNearMine = 2
+    stateArr[2][1].numNearMine = 2
+    stateArr[2][3].numNearMine = 2
+    stateArr[3][1].numNearMine = 2
+    stateArr[3][3].numNearMine = 2
 
-    this.state = stateArr
+    this.state = {cells: stateArr}
 }   //end of constructor
   
-  handleClick(row, col) {console.log('clicked on-row:', row, "col:", col)}
+  handleClick(row, col) {
+    this.state.cells[row][col].isClicked = true
+    this.setState({cells: this.state.cells})
+    
+
+    if (this.state.cells[row][col].isClicked === true 
+      && this.state.cells[row][col].isMine === true) {
+      console.log('GAME OVER')
+    }
+    
+    this.state.cells[row][col].displayMode = 'clicked'
+    this.setState({cells: this.state.cells})
+    console.log(this.state)
+
+  }   //end of handleClick
+
   rtClick(row, col) {console.log('rt-clicked on- row:', row, "col: ", col)}
   render() {
     return(
@@ -78,7 +94,8 @@ class App extends Component {
           <span>0</span>
         </div>
       </div>
-      <Board handleClick = {this.handleClick} rtClick = {this.rtClick}/>
+      <Board handleClick = {this.handleClick} 
+          rtClick = {this.rtClick}/>
       <button className = "restart">Restart</button>
     </div>
     )}
