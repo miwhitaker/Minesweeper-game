@@ -1,6 +1,7 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import './App.css';
-import Board from './Components/board'
+import Board from './Components/board';
+
 
 
 class App extends Component {
@@ -12,18 +13,28 @@ class App extends Component {
     const winThing = 
           {isMine: false, 
             isClicked: false, 
-            isRtClicked: false, 
-            numNearMine: 0,
-            displayMode: "initial"    
-          }
+             isRtClicked: false}
+
+    const numNearMine = []
+    const dummy = []
+    const thing = []
+    const mode = []
     const stateArr = []
     const tempArr = []
+
     for(let i = 0; i < 5; i++) {
-      tempArr.push(JSON.parse(JSON.stringify(winThing)))
+      tempArr.push(JSON.parse(JSON.stringify(winThing)));
+      thing.push(JSON.parse(JSON.stringify('initial')));
+      dummy.push(0)
     }
+
     for(let j = 0; j < 5; j++) {
-      stateArr[j] = JSON.parse(JSON.stringify(tempArr))
+      stateArr[j] = JSON.parse(JSON.stringify(tempArr));
+      mode[j] = JSON.parse(JSON.stringify(thing));
+      numNearMine[j] = JSON.parse(JSON.stringify(dummy))
     }
+    
+    
     //modify this to loop through const mines (location of mines) and change isMine to true
     //hmm...need to extract values [i,j] one at a time and do stateArr[i][j].isMine = true
     //locateMine() function
@@ -45,59 +56,69 @@ class App extends Component {
     //stateArr[i+1][j].values.numNearMines = stateArr[i+1][j].values.numNearMines + 1
     //stateArr[i+1][j+1].values.numNearMines = stateArr[i+1][j+1].values.numNearMines + 1
 
-    stateArr[0][0].numNearMine = 1
-    stateArr[0][1].numNearMine = 1
-    stateArr[0][3].numNearMine = 1
-    stateArr[0][4].numNearMine = 1
-    stateArr[3][0].numNearMine = 1
-    stateArr[3][2].numNearMine = 1
-    stateArr[3][4].numNearMine = 1
-    stateArr[4][1].numNearMine = 1
-    stateArr[4][3].numNearMine = 1
-    stateArr[1][0].numNearMine = 2
-    stateArr[1][3].numNearMine = 2
-    stateArr[2][1].numNearMine = 2
-    stateArr[2][3].numNearMine = 2
-    stateArr[3][1].numNearMine = 2
-    stateArr[3][3].numNearMine = 2
-
-    this.state = {cells: stateArr}
+    numNearMine[0][0] = 1
+    numNearMine[0][1] = 1
+    numNearMine[0][3] = 1
+    numNearMine[0][4] = 1
+    numNearMine[3][0] = 1
+    numNearMine[3][2] = 1
+    numNearMine[3][4] = 1
+    numNearMine[4][1] = 1
+    numNearMine[4][3] = 1
+    numNearMine[1][0] = 2
+    numNearMine[1][3] = 2
+    numNearMine[2][1] = 2
+    numNearMine[2][3] = 2
+    numNearMine[3][1] = 2
+    numNearMine[3][3] = 2
+    console.log(numNearMine)
+    this.state = {cells: stateArr, mode: mode, numMines: numNearMine}
+    
 }   //end of constructor
   
   handleClick(row, col) {
     this.state.cells[row][col].isClicked = true
     this.setState({cells: this.state.cells})
-    
 
     if (this.state.cells[row][col].isClicked === true 
       && this.state.cells[row][col].isMine === true) {
       console.log('GAME OVER')
     }
     
-    this.state.cells[row][col].displayMode = 'clicked'
-    this.setState({cells: this.state.cells})
+    this.state.mode[row][col] = 'clicked'
+    this.setState({cells: this.state.cells, mode: this.state.mode})
     console.log(this.state)
 
   }   //end of handleClick
 
-  rtClick(row, col) {console.log('rt-clicked on- row:', row, "col: ", col)}
+  rtClick(row, col) {
+    console.log('rt-clicked on- row:', row, "col: ", col)
+    this.state.cells[row][col].isRtClicked = !this.state.cells[row][col].isRtClicked
+    this.state.mode[row][col] = 'rtclicked'
+    this.setState({cells: this.state.cells})
+    console.log(this.state.cells)
+    
+  }   //end of rtClick
+
   render() {
     return(
-    <div>
-      <div className = "gameHeader">
-        <div className = "scoreCount">
-          <span>Mines: </span>
-          <span>5</span>
+      <div>
+        <div className = "gameHeader">
+          <div className = "scoreCount">
+            <span>Mines: </span>
+            <span>5</span>
+          </div>
+          <div className = "scoreCount">
+            <span>Marked: </span>
+            <span>0</span>
+          </div>
         </div>
-        <div className = "scoreCount">
-          <span>Marked: </span>
-          <span>0</span>
-        </div>
-      </div>
-      <Board handleClick = {this.handleClick} 
-          rtClick = {this.rtClick}/>
-      <button className = "restart">Restart</button>
-    </div>
+        <Board handleClick = {this.handleClick} 
+            rtClick = {this.rtClick}
+            displayMode = {this.state.mode}
+            numMines = {this.state.numMines} />
+        <button className = "restart">Restart</button>
+      </div>  
     )}
 }  //end of game component 
 

@@ -1,0 +1,15 @@
+.initial {
+    height: 35px;
+    width: 35px;
+    background-color: red;
+    cursor: pointer
+  }
+
+.clicked {
+    font-size: 1.3rem;
+    height: 35px;
+    width: 35px;
+    background-color: whitesmoke;
+    cursor: pointer
+}
+

@@ -1,20 +1,20 @@
-import React from 'react'
-import Cell from'./cell'
+import React from 'react';
+import Cell from'./cell';
 
-let count = 100;
-function counter() {
-  count = count + 1;
-  return count
-}
+
 export default function Row(props) {
     let array = []
     let disp = {display: 'flex'}
     for(let i = 0; i < 5; i++) {
-      array.push(<Cell key = {counter()} 
+      array.push(<Cell
+                  key = {i}
+                  style = {disp}
                   row = {props.row} 
                   col = {i} 
                   handleClick = {props.handleClick} 
-                  rtClick = {props.rtClick}/>)
+                  rtClick = {props.rtClick}
+                  displayMode = {props.displayMode[i]}
+                  numMines = {props.numMines[i]} />  )
     }
     
     return (

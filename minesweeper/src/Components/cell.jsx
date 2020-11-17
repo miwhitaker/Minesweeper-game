@@ -1,26 +1,39 @@
 import React from 'react';
+import './cells.css';
 
-let count = 10;
-function key() {
+
+let count = 100;
+function counter() {
   count = count + 1;
-  return count;
+  return count
 }
-export default function Cell(props) {
-    let style = {
-      height: 25,
-      width: 25,
-      border: '1px solid black',
-      backgroundColor: 'red'
-    }
-    return (
-      <button 
-        key = {key()}
-        style = {style} 
-        onClick = {() => props.handleClick(props.row, props.col)} 
-        onContextMenu = {(e) => 
-          {props.rtClick(props.row, props.col); 
-          e.preventDefault()}}>
 
+export default function Cell(props) {
+
+    if (props.displayMode === 'initial') {
+      return (
+        <button 
+          key = {counter()}
+          className = {props.displayMode}
+          onClick = {() => props.handleClick(props.row, props.col)} 
+          onContextMenu = {(e) => 
+            {props.rtClick(props.row, props.col); 
+            e.preventDefault()}} >
       </button> )
+    }
+
+    else if (props.displayMode === 'clicked') {
+      return (
+        <button 
+          key = {counter()}
+          className = {props.displayMode}
+          onClick = {() => props.handleClick(props.row, props.col)} 
+          onContextMenu = {(e) => 
+            {props.rtClick(props.row, props.col); 
+            e.preventDefault()}} >
+            {props.numMines}
+      </button>
+      )
+    } 
   }
 
