@@ -10,10 +10,10 @@ function counter() {
 
 export default function Cell(props) {
 
-    if (props.displayMode === 'initial') {
-      return (
-        <button 
-          key = {counter()}
+  if (props.displayMode === 'initial') {
+    return (
+      <button 
+        key = {counter()}
           className = {props.displayMode}
           onClick = {() => props.handleClick(props.row, props.col)} 
           onContextMenu = {(e) => 
@@ -32,8 +32,58 @@ export default function Cell(props) {
             {props.rtClick(props.row, props.col); 
             e.preventDefault()}} >
             {props.numMines}
-      </button>
-      )
+        </button>   )
     } 
-  }
+
+    else if (props.displayMode === 'empty') {
+      return (
+        <button 
+          key = {counter()}
+          className = {props.displayMode}
+          onClick = {() => props.handleClick(props.row, props.col)} 
+          onContextMenu = {(e) => 
+            {props.rtClick(props.row, props.col); 
+            e.preventDefault()}} >
+        </button>  )
+    }
+
+    else if (props.displayMode === 'rtClicked') {
+      return (
+        <button 
+          key = {counter()}
+            className = {props.displayMode}
+            onClick = {() => props.handleClick(props.row, props.col)} 
+            onContextMenu = {(e) => 
+              {props.rtClick(props.row, props.col); 
+              e.preventDefault()}} >
+                <i class="fas fa-crosshairs"></i>
+        </button>  )
+    }
+
+    else if (props.displayMode === 'explosion') {
+      return (
+        <button 
+          key = {counter()}
+            className = {props.displayMode}
+            onClick = {() => props.handleClick(props.row, props.col)} 
+            onContextMenu = {(e) => 
+              {props.rtClick(props.row, props.col); 
+              e.preventDefault()}} >
+                <img src = "../images/explosion.jpg" />
+        </button>  )
+    }
+
+    else if (props.displayMode === 'mine') {
+      return (
+        <button 
+          key = {counter()}
+            className = {props.displayMode}
+            onClick = {() => props.handleClick(props.row, props.col)} 
+            onContextMenu = {(e) => 
+              {props.rtClick(props.row, props.col); 
+              e.preventDefault()}} >
+                <i class="fas fa-bomb"></i>
+        </button>  )
+    }
+  }   //end of function Cell
 

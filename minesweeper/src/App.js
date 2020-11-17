@@ -3,6 +3,36 @@ import './App.css';
 import Board from './Components/board';
 
 
+//max is (# of rows/columns - 1), x=row, y=col
+function findNeighbors(x, y, max) {
+  if (x === 0 && y === 0) {
+    return [[0, 1], [1, 0], [1, 1]];
+  }
+  else if (x === max && y === 0) {
+    return [[x-1, 0], [x-1, y+1], [x, y+1]];
+  }
+  else if (x === 0 && y === max) {
+    return [[0, y-1], [x+1, y-1], [x+1, y]];
+  }
+  else if (x === max && y === max) {
+    return [[x-1, y], [x-1, y-1], [x, y-1]];
+  }
+  else if (x === 0) {
+    return [[0, y-1], [0, y+1], [1, y-1], [1, y], [1, y+1]];
+  }
+  else if (y === 0) {
+    return [[x+1, 0], [x-1, 0], [x-1, 1], [x, 1], [x+1, 1]];
+  }
+  else if (x === max) {
+    return [[x, y-1], [x, y+1], [x-1, y-1], [x-1, y], [x-1, y+1]];
+  }
+  else if (y === max) {
+    return [[x-1, y], [x+1, y], [x-1, y-1], [x, y-1], [x+1, y-1]];
+  }
+  else {
+    return [[x-1, y-1], [x-1, y], [x-1, y+1], [x, y-1], [x, y+1], [x+1, y-1], [x+1, y], [x+1, y+1]];
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -47,14 +77,7 @@ class App extends Component {
     
     //populate numNearMines 
     //populateNum() function
-    //stateArr[i-1][j-1].values.numNearMines = stateArr[i-1][j-1].values.numNearMines + 1
-    //stateArr[i-1][j].values.numNearMines = stateArr[i-1][j].values.numNearMines + 1
-    //stateArr[i-1][j+1].values.numNearMines = stateArr[i-1][j+1].values.numNearMines + 1
-    //stateArr[i][j-1].values.numNearMines = stateArr[i][j-1].values.numNearMines + 1
-    //stateArr[i][j+1].values.numNearMines = stateArr[i][j+1].values.numNearMines + 1
-    //stateArr[i+1][j-1].values.numNearMines = stateArr[i+1][j-1].values.numNearMines + 1
-    //stateArr[i+1][j].values.numNearMines = stateArr[i+1][j].values.numNearMines + 1
-    //stateArr[i+1][j+1].values.numNearMines = stateArr[i+1][j+1].values.numNearMines + 1
+    
 
     numNearMine[0][0] = 1
     numNearMine[0][1] = 1
@@ -84,19 +107,27 @@ class App extends Component {
       && this.state.cells[row][col].isMine === true) {
       console.log('GAME OVER')
     }
-    
-    this.state.mode[row][col] = 'clicked'
+
+    if (this.state.cells[row][col].isMine === false 
+      && this.state.numMines[row][col] === 0) {
+        this.state.mode[row][col] = 'empty'
+      }
+    else {this.state.mode[row][col] = 'clicked'}
     this.setState({cells: this.state.cells, mode: this.state.mode})
     console.log(this.state)
 
   }   //end of handleClick
 
   rtClick(row, col) {
-    console.log('rt-clicked on- row:', row, "col: ", col)
-    this.state.cells[row][col].isRtClicked = !this.state.cells[row][col].isRtClicked
-    this.state.mode[row][col] = 'rtclicked'
-    this.setState({cells: this.state.cells})
-    console.log(this.state.cells)
+    if (this.state.cells[row][col].isClicked === true) {return}
+    else {this.state.cells[row][col].isRtClicked = !this.state.cells[row][col].isRtClicked}
+    
+    if (this.state.cells[row][col].isRtClicked === true) {
+      this.state.mode[row][col] = 'rtClicked' }
+    else {this.state.mode[row][col] = 'initial'}
+  
+    this.setState({cells: this.state.cells, mode: this.state.mode})
+    
     
   }   //end of rtClick
 

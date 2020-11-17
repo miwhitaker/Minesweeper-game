@@ -5,7 +5,7 @@
     cursor: pointer
   }
 
-.clicked {
+.clicked, .empty {
     font-size: 1.3rem;
     height: 35px;
     width: 35px;
@@ -13,3 +13,21 @@
     cursor: pointer
 }
 
+.rtClicked {
+    height: 35px;
+    width: 35px;
+    background-color: red;
+    cursor: pointer
+}
+
+.explosion {
+    height: 35px;
+    width: 35px;
+    background-color: whitesmoke;
+}
+
+.mine {
+  height: 35px;
+  width: 35px;
+  background-color: whitesmoke;
+}
