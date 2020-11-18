@@ -16,18 +16,12 @@
 .rtClicked {
     height: 35px;
     width: 35px;
-    background-color: red;
+    background-color: goldenrod;
     cursor: pointer
 }
 
-.explosion {
+.explosion, .mine {
     height: 35px;
     width: 35px;
     background-color: whitesmoke;
-}
-
-.mine {
-  height: 35px;
-  width: 35px;
-  background-color: whitesmoke;
 }

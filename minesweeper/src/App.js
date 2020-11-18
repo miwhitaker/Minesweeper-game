@@ -39,7 +39,7 @@ class App extends Component {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.rtClick = this.rtClick.bind(this)
-    const mines = {location1: [1,1], location2: [0,2], location3: [2,4], location4: [4,1], location5: [4,2]}
+    
     const winThing = 
           {isMine: false, 
             isClicked: false, 
@@ -64,64 +64,63 @@ class App extends Component {
       numNearMine[j] = JSON.parse(JSON.stringify(dummy))
     }
     
+    const mines = [[1, 1], [0, 2], [2, 4], [4, 1], [4, 2]]
+    for (let k in mines) {
+      const val1 = mines[k][0];
+      const val2 = mines[k][1];
+      stateArr[val1][val2].isMine = true
+    }
     
-    //modify this to loop through const mines (location of mines) and change isMine to true
-    //hmm...need to extract values [i,j] one at a time and do stateArr[i][j].isMine = true
-    //locateMine() function
+    for (let q in mines) {
+      const val1 = mines[q][0];
+      const val2 = mines[q][1];
+      const values = findNeighbors(val1, val2, 4)
+      for (let t in values) {
+        const a = values[t][0];
+        const b = values[t][1];
+        if (stateArr[a][b].isMine === false) {
+          numNearMine[a][b] += 1
+        }
+      }
+    }
     
-    stateArr[1][1].isMine = true
-    stateArr[0][2].isMine = true
-    stateArr[2][4].isMine = true
-    stateArr[4][1].isMine = true
-    stateArr[4][2].isMine = true
-    
-    //populate numNearMines 
-    //populateNum() function
-    
+    console.log(numNearMine);
 
-    numNearMine[0][0] = 1
-    numNearMine[0][1] = 1
-    numNearMine[0][3] = 1
-    numNearMine[0][4] = 1
-    numNearMine[3][0] = 1
-    numNearMine[3][2] = 1
-    numNearMine[3][4] = 1
-    numNearMine[4][1] = 1
-    numNearMine[4][3] = 1
-    numNearMine[1][0] = 2
-    numNearMine[1][3] = 2
-    numNearMine[2][1] = 2
-    numNearMine[2][3] = 2
-    numNearMine[3][1] = 2
-    numNearMine[3][3] = 2
-    console.log(numNearMine)
     this.state = {cells: stateArr, mode: mode, numMines: numNearMine}
     
 }   //end of constructor
   
   handleClick(row, col) {
-    this.state.cells[row][col].isClicked = true
+    if (this.state.cells[row][col].isRtClicked === true)
+      {return}
+    else {this.state.cells[row][col].isClicked = true}
+
     this.setState({cells: this.state.cells})
 
     if (this.state.cells[row][col].isClicked === true 
       && this.state.cells[row][col].isMine === true) {
-      console.log('GAME OVER')
+      this.state.mode[row][col] = 'explosion'
+      this.setState({cells: this.state.cells, mode: this.state.mode})
+      this.youLost()
     }
-
-    if (this.state.cells[row][col].isMine === false 
+    else if (this.state.cells[row][col].isMine === false 
       && this.state.numMines[row][col] === 0) {
         this.state.mode[row][col] = 'empty'
-      }
+    }
     else {this.state.mode[row][col] = 'clicked'}
+
     this.setState({cells: this.state.cells, mode: this.state.mode})
     console.log(this.state)
+    //this.victoryConditions();
 
   }   //end of handleClick
 
   rtClick(row, col) {
-    if (this.state.cells[row][col].isClicked === true) {return}
+    if (this.state.cells[row][col].isClicked === true) 
+      {return}
     else {this.state.cells[row][col].isRtClicked = !this.state.cells[row][col].isRtClicked}
-    
+    this.setState({cells: this.state.cells})
+
     if (this.state.cells[row][col].isRtClicked === true) {
       this.state.mode[row][col] = 'rtClicked' }
     else {this.state.mode[row][col] = 'initial'}
@@ -130,6 +129,20 @@ class App extends Component {
     
     
   }   //end of rtClick
+
+  victoryConditions() {
+    
+    /*for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
+        this.state.cells[i][j].isMine && this.state.cells[i][j].isClicked 
+      }
+    } */
+    
+  }   //end of victory conditions
+
+  youLost() {
+    console.log('GAME OVER')
+  }
 
   render() {
     return(

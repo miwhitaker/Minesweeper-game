@@ -2,6 +2,7 @@ import React from 'react';
 import './cells.css';
 
 
+
 let count = 100;
 function counter() {
   count = count + 1;
@@ -56,7 +57,9 @@ export default function Cell(props) {
             onContextMenu = {(e) => 
               {props.rtClick(props.row, props.col); 
               e.preventDefault()}} >
-                <i class="fas fa-crosshairs"></i>
+                
+                  <i className="fa fa-crosshairs"></i>
+                
         </button>  )
     }
 
@@ -69,7 +72,7 @@ export default function Cell(props) {
             onContextMenu = {(e) => 
               {props.rtClick(props.row, props.col); 
               e.preventDefault()}} >
-                <img src = "../images/explosion.jpg" />
+                <img src = '../images/explosion-sm.jpg' alt = 'explosion'/>
         </button>  )
     }
 
@@ -82,7 +85,7 @@ export default function Cell(props) {
             onContextMenu = {(e) => 
               {props.rtClick(props.row, props.col); 
               e.preventDefault()}} >
-                <i class="fas fa-bomb"></i>
+                <i className="fas fa-bomb"></i>
         </button>  )
     }
   }   //end of function Cell
