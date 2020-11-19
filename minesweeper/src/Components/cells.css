@@ -1,4 +1,4 @@
-.initial {
+.initial, .gameover {
     height: 35px;
     width: 35px;
     background-color: red;
@@ -17,11 +17,20 @@
     height: 35px;
     width: 35px;
     background-color: goldenrod;
-    cursor: pointer
+    cursor: pointer;
+    background-image: url("../images/crosshair.png")
 }
 
-.explosion, .mine {
+.explosion {
     height: 35px;
     width: 35px;
     background-color: whitesmoke;
+    background-image: url("../images/explosion.png")
+}
+
+.mine {
+    height: 35px;
+    width: 35px;
+    background-color: whitesmoke;
+    background-image: url("../images/bomb.png")
 }

@@ -3,6 +3,7 @@ import './App.css';
 import Board from './Components/board';
 
 
+
 //max is (# of rows/columns - 1), x=row, y=col
 function findNeighbors(x, y, max) {
   if (x === 0 && y === 0) {
@@ -32,6 +33,16 @@ function findNeighbors(x, y, max) {
   else {
     return [[x-1, y-1], [x-1, y], [x-1, y+1], [x, y-1], [x, y+1], [x+1, y-1], [x+1, y], [x+1, y+1]];
   }
+}
+
+function randomNumber(max) {
+  let randArr = []
+  for (let i = 0; i < max; i++) {
+    const x = Math.floor(Math.random()) * max;
+    const y = Math.floor(Math.random()) * max;
+    randArr.push([x, y])
+  }
+  return randArr
 }
 
 class App extends Component {
@@ -64,6 +75,8 @@ class App extends Component {
       numNearMine[j] = JSON.parse(JSON.stringify(dummy))
     }
     
+    
+
     const mines = [[1, 1], [0, 2], [2, 4], [4, 1], [4, 2]]
     for (let k in mines) {
       const val1 = mines[k][0];
@@ -86,7 +99,10 @@ class App extends Component {
     
     console.log(numNearMine);
 
-    this.state = {cells: stateArr, mode: mode, numMines: numNearMine}
+    this.state = {cells: stateArr, 
+                  mode: mode, 
+                  numMines: numNearMine, 
+                  minesTagged: 0}
     
 }   //end of constructor
   
@@ -94,8 +110,6 @@ class App extends Component {
     if (this.state.cells[row][col].isRtClicked === true)
       {return}
     else {this.state.cells[row][col].isClicked = true}
-
-    this.setState({cells: this.state.cells})
 
     if (this.state.cells[row][col].isClicked === true 
       && this.state.cells[row][col].isMine === true) {
@@ -109,39 +123,62 @@ class App extends Component {
     }
     else {this.state.mode[row][col] = 'clicked'}
 
+    // eslint-disable-next-line
     this.setState({cells: this.state.cells, mode: this.state.mode})
-    console.log(this.state)
-    //this.victoryConditions();
+    
+    
+    this.victoryConditions();
 
   }   //end of handleClick
 
   rtClick(row, col) {
     if (this.state.cells[row][col].isClicked === true) 
       {return}
-    else {this.state.cells[row][col].isRtClicked = !this.state.cells[row][col].isRtClicked}
-    this.setState({cells: this.state.cells})
+    else {
+      this.state.cells[row][col].isRtClicked = !this.state.cells[row][col].isRtClicked
+      }
 
     if (this.state.cells[row][col].isRtClicked === true) {
-      this.state.mode[row][col] = 'rtClicked' }
-    else {this.state.mode[row][col] = 'initial'}
-  
-    this.setState({cells: this.state.cells, mode: this.state.mode})
+      this.state.mode[row][col] = 'rtClicked'
+      this.state.minesTagged = this.state.minesTagged + 1
+    }
+    else {
+      this.state.mode[row][col] = 'initial'
+      this.state.minesTagged = this.state.minesTagged - 1
+    }
+
+    // eslint-disable-next-line
+    this.setState({cells: this.state.cells, 
+                    mode: this.state.mode, 
+                    minesTagged: this.state.minesTagged})
     
     
   }   //end of rtClick
 
   victoryConditions() {
-    
-    /*for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
-        this.state.cells[i][j].isMine && this.state.cells[i][j].isClicked 
+        if(this.state.cells[i][j].isMine === false 
+        && this.state.cells[i][j].isClicked ===false) 
+          {return false}
       }
-    } */
-    
+    } 
+    return true
   }   //end of victory conditions
 
   youLost() {
-    console.log('GAME OVER')
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
+        if(this.state.cells[i][j].isMine === true 
+          && this.state.cells[i][j].isClicked === false) {
+            this.state.mode[i][j] = 'mine'
+          }
+        else if (this.state.mode[i][j] === 'initial') {
+          this.state.mode[i][j] = 'gameover'
+          }
+      }
+    }
+    this.setState({cells: this.state.cells, mode: this.state.mode})
   }
 
   render() {
@@ -153,8 +190,8 @@ class App extends Component {
             <span>5</span>
           </div>
           <div className = "scoreCount">
-            <span>Marked: </span>
-            <span>0</span>
+            <span>Mines Tagged: </span>
+            <span>{this.state.minesTagged}</span>
           </div>
         </div>
         <Board handleClick = {this.handleClick} 
@@ -165,8 +202,5 @@ class App extends Component {
       </div>  
     )}
 }  //end of game component 
-
-
-
 
 export default App; 

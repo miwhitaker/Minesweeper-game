@@ -28,10 +28,7 @@ export default function Cell(props) {
         <button 
           key = {counter()}
           className = {props.displayMode}
-          onClick = {() => props.handleClick(props.row, props.col)} 
-          onContextMenu = {(e) => 
-            {props.rtClick(props.row, props.col); 
-            e.preventDefault()}} >
+          onContextMenu = {(e) => e.preventDefault()}>
             {props.numMines}
         </button>   )
     } 
@@ -41,10 +38,7 @@ export default function Cell(props) {
         <button 
           key = {counter()}
           className = {props.displayMode}
-          onClick = {() => props.handleClick(props.row, props.col)} 
-          onContextMenu = {(e) => 
-            {props.rtClick(props.row, props.col); 
-            e.preventDefault()}} >
+          onContextMenu = {(e) =>  e.preventDefault()}>
         </button>  )
     }
 
@@ -52,14 +46,12 @@ export default function Cell(props) {
       return (
         <button 
           key = {counter()}
-            className = {props.displayMode}
-            onClick = {() => props.handleClick(props.row, props.col)} 
-            onContextMenu = {(e) => 
-              {props.rtClick(props.row, props.col); 
-              e.preventDefault()}} >
-                
-                  <i className="fa fa-crosshairs"></i>
-                
+          className = {props.displayMode}
+          onClick = {() => props.handleClick(props.row, props.col)} 
+          onContextMenu = {(e) => 
+            {props.rtClick(props.row, props.col); 
+            e.preventDefault()}} >
+                        
         </button>  )
     }
 
@@ -67,12 +59,10 @@ export default function Cell(props) {
       return (
         <button 
           key = {counter()}
-            className = {props.displayMode}
-            onClick = {() => props.handleClick(props.row, props.col)} 
+            className = {props.displayMode} 
             onContextMenu = {(e) => 
-              {props.rtClick(props.row, props.col); 
-              e.preventDefault()}} >
-                <img src = '../images/explosion-sm.jpg' alt = 'explosion'/>
+              e.preventDefault()} >
+                
         </button>  )
     }
 
@@ -81,12 +71,18 @@ export default function Cell(props) {
         <button 
           key = {counter()}
             className = {props.displayMode}
-            onClick = {() => props.handleClick(props.row, props.col)} 
-            onContextMenu = {(e) => 
-              {props.rtClick(props.row, props.col); 
-              e.preventDefault()}} >
-                <i className="fas fa-bomb"></i>
+            onContextMenu = {(e) =>  
+              e.preventDefault()}>
         </button>  )
+    }
+    
+    else if (props.displayMode === 'gameover') {
+      return (
+        <button 
+          key = {counter()}
+            className = {props.displayMode} 
+            onContextMenu = {(e) => e.preventDefault()}>
+        </button> )
     }
   }   //end of function Cell
 
