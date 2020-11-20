@@ -75,20 +75,20 @@ class App extends Component {
       numNearMine[j] = JSON.parse(JSON.stringify(dummy))
     }
     
-    
-
+  
     const mines = [[1, 1], [0, 2], [2, 4], [4, 1], [4, 2]]
-    for (let k in mines) {
+    for (let k = 0; k < mines.length; k++) {
       const val1 = mines[k][0];
       const val2 = mines[k][1];
       stateArr[val1][val2].isMine = true
+      
     }
     
-    for (let q in mines) {
+    for (let q = 0; q < mines.length; q++) {
       const val1 = mines[q][0];
       const val2 = mines[q][1];
       const values = findNeighbors(val1, val2, 4)
-      for (let t in values) {
+      for (let t = 0; t < values.length; t++) {
         const a = values[t][0];
         const b = values[t][1];
         if (stateArr[a][b].isMine === false) {
@@ -96,38 +96,56 @@ class App extends Component {
         }
       }
     }
-    
-    console.log(numNearMine);
 
     this.state = {cells: stateArr, 
                   mode: mode, 
                   numMines: numNearMine, 
-                  minesTagged: 0}
+                  minesTagged: 0,
+                  winState: 0}
     
 }   //end of constructor
   
   handleClick(row, col) {
     if (this.state.cells[row][col].isRtClicked === true)
       {return}
+      // eslint-disable-next-line
     else {this.state.cells[row][col].isClicked = true}
 
     if (this.state.cells[row][col].isClicked === true 
       && this.state.cells[row][col].isMine === true) {
+        // eslint-disable-next-line
       this.state.mode[row][col] = 'explosion'
       this.setState({cells: this.state.cells, mode: this.state.mode})
       this.youLost()
     }
     else if (this.state.cells[row][col].isMine === false 
       && this.state.numMines[row][col] === 0) {
+        // eslint-disable-next-line
         this.state.mode[row][col] = 'empty'
     }
+    // eslint-disable-next-line
     else {this.state.mode[row][col] = 'clicked'}
 
     // eslint-disable-next-line
     this.setState({cells: this.state.cells, mode: this.state.mode})
     
-    
-    this.victoryConditions();
+    if (this.state.mode[row][col] === 'empty') {
+      const values = findNeighbors(row, col, 4)
+      for (let num = 0; num < values.length; num++) {
+        const val1 = values[num][0]
+        const val2 = values[num][1]
+        // eslint-disable-next-line
+        this.state.cells[val1][val2].isClicked = true
+        // eslint-disable-next-line
+        this.state.mode[val1][val2] = 'clicked'
+      }
+    }
+
+    this.setState({cells: this.state.cells, mode: this.state.mode})
+    if (this.victoryConditions() === true) {
+      this.setState({winState: 1})
+    } 
+
 
   }   //end of handleClick
 
@@ -135,19 +153,23 @@ class App extends Component {
     if (this.state.cells[row][col].isClicked === true) 
       {return}
     else {
+      // eslint-disable-next-line
       this.state.cells[row][col].isRtClicked = !this.state.cells[row][col].isRtClicked
       }
 
     if (this.state.cells[row][col].isRtClicked === true) {
+      // eslint-disable-next-line
       this.state.mode[row][col] = 'rtClicked'
+      // eslint-disable-next-line
       this.state.minesTagged = this.state.minesTagged + 1
     }
     else {
+      // eslint-disable-next-line
       this.state.mode[row][col] = 'initial'
+      // eslint-disable-next-line
       this.state.minesTagged = this.state.minesTagged - 1
     }
 
-    // eslint-disable-next-line
     this.setState({cells: this.state.cells, 
                     mode: this.state.mode, 
                     minesTagged: this.state.minesTagged})
@@ -171,34 +193,95 @@ class App extends Component {
       for (let j = 0; j < 5; j++) {
         if(this.state.cells[i][j].isMine === true 
           && this.state.cells[i][j].isClicked === false) {
+            // eslint-disable-next-line
             this.state.mode[i][j] = 'mine'
           }
         else if (this.state.mode[i][j] === 'initial') {
+          // eslint-disable-next-line
           this.state.mode[i][j] = 'gameover'
           }
       }
     }
-    this.setState({cells: this.state.cells, mode: this.state.mode})
+    this.setState({cells: this.state.cells, mode: this.state.mode, winState: 2})
   }
+
+  restart() {
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
+        // eslint-disable-next-line
+        this.state.cells[i][j].isMine = false 
+        // eslint-disable-next-line
+        this.state.cells[i][j].isClicked = false
+        // eslint-disable-next-line
+        this.state.cells[i][j].isRtClicked = false
+        // eslint-disable-next-line
+        this.state.mode[i][j] = 'initial'
+        // eslint-disable-next-line
+        this.state.numMines[i][j] = 0
+      }
+    }
+    this.setState({
+      cells: this.state.cells,
+      mode: this.state.mode,
+      numMines: this.state.numMines, 
+      minesTagged: 0,
+      winState: 0
+    })
+
+    const mines = [[1, 1], [0, 2], [2, 4], [4, 1], [4, 2]]
+    for (let k = 0; k < mines.length; k++) {
+      const val1 = mines[k][0];
+      const val2 = mines[k][1];
+      // eslint-disable-next-line
+      this.state.cells[val1][val2].isMine = true
+    }
+    
+    for (let q = 0; q < mines.length; q++) {
+      const val1 = mines[q][0];
+      const val2 = mines[q][1];
+      const values = findNeighbors(val1, val2, 4)
+      for (let t = 0; t < values.length; t++) {
+        const a = values[t][0];
+        const b = values[t][1];
+        if (this.state.cells[a][b].isMine === false) {
+          // eslint-disable-next-line
+          this.state.numMines[a][b] += 1
+        }
+      }
+    }
+    this.setState({
+      cells: this.state.cells,
+      mode: this.state.mode,
+      numMines: this.state.numMines
+    })
+    console.log(this.state)
+  }   //end of restart method
 
   render() {
     return(
-      <div>
+      <div className = "gameContainer">
         <div className = "gameHeader">
           <div className = "scoreCount">
-            <span>Mines: </span>
-            <span>5</span>
+            <span>Mines
+              <span>5</span>
+            </span>
+            
           </div>
           <div className = "scoreCount">
-            <span>Mines Tagged: </span>
-            <span>{this.state.minesTagged}</span>
+            <span>Mines Tagged:
+              <span>{this.state.minesTagged}</span>
+            </span>
+            
           </div>
         </div>
         <Board handleClick = {this.handleClick} 
             rtClick = {this.rtClick}
             displayMode = {this.state.mode}
             numMines = {this.state.numMines} />
-        <button className = "restart">Restart</button>
+        <button className = "restart" onClick = {() => this.restart()}>Restart</button>
+        <div>
+          {this.state.winState > 0 ? this.state.winState === 1 ? 'You win': 'You lose' : ''}
+        </div>
       </div>  
     )}
 }  //end of game component 

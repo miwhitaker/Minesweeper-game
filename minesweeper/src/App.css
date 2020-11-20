@@ -1,3 +1,23 @@
+header {
+  background-color: black;
+  color: yellow;
+  font-size: 2.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.gameContainer {
+  width: 175px;
+  margin-left: auto;
+  margin-right: auto
+  
+}
+
+.gameheader {
+  display: flex;
+  justify-content: space-between
+}
+
 .App {
   text-align: center;
 }
