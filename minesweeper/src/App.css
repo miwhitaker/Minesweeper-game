@@ -18,6 +18,13 @@ header {
   justify-content: space-between
 }
 
+.numDisplay {
+  color: yellow;
+  background-color: black;
+  border: 1px solid black;
+  margin: 3px 3px
+}
+
 .App {
   text-align: center;
 }

@@ -37,11 +37,17 @@ function findNeighbors(x, y, max) {
 
 function randomNumber(max) {
   let randArr = []
-  for (let i = 0; i < max; i++) {
-    const x = Math.floor(Math.random()) * max;
-    const y = Math.floor(Math.random()) * max;
+  while(randArr.length < max) {
+    const x = Math.floor(Math.random()* max) ;
+    const y = Math.floor(Math.random()* max) ;
+    const check = [x, y]
     randArr.push([x, y])
+    for(i = 0; i <= (randArr.length - 2); i++) {
+      if(randArr[i] === check) 
+        {randArr.pop()}
+    }
   }
+  console.log(randArr)
   return randArr
 }
 
@@ -75,8 +81,7 @@ class App extends Component {
       numNearMine[j] = JSON.parse(JSON.stringify(dummy))
     }
     
-  
-    const mines = [[1, 1], [0, 2], [2, 4], [4, 1], [4, 2]]
+    const mines = randomNumber(5)
     for (let k = 0; k < mines.length; k++) {
       const val1 = mines[k][0];
       const val2 = mines[k][1];
@@ -126,7 +131,6 @@ class App extends Component {
     // eslint-disable-next-line
     else {this.state.mode[row][col] = 'clicked'}
 
-    // eslint-disable-next-line
     this.setState({cells: this.state.cells, mode: this.state.mode})
     
     if (this.state.mode[row][col] === 'empty') {
@@ -136,8 +140,12 @@ class App extends Component {
         const val2 = values[num][1]
         // eslint-disable-next-line
         this.state.cells[val1][val2].isClicked = true
+        if(this.state.numMines[val1][val2] === 0) {
+          // eslint-disable-next-line
+          this.state.mode[val1][val2] = 'empty'
+        }
         // eslint-disable-next-line
-        this.state.mode[val1][val2] = 'clicked'
+        else {this.state.mode[val1][val2] = 'clicked'}
       }
     }
 
@@ -228,7 +236,7 @@ class App extends Component {
       winState: 0
     })
 
-    const mines = [[1, 1], [0, 2], [2, 4], [4, 1], [4, 2]]
+    const mines = randomNumber(5)
     for (let k = 0; k < mines.length; k++) {
       const val1 = mines[k][0];
       const val2 = mines[k][1];
@@ -254,7 +262,6 @@ class App extends Component {
       mode: this.state.mode,
       numMines: this.state.numMines
     })
-    console.log(this.state)
   }   //end of restart method
 
   render() {
@@ -263,13 +270,13 @@ class App extends Component {
         <div className = "gameHeader">
           <div className = "scoreCount">
             <span>Mines
-              <span>5</span>
+              <span className = "numDisplay">5</span>
             </span>
             
           </div>
           <div className = "scoreCount">
             <span>Mines Tagged:
-              <span>{this.state.minesTagged}</span>
+              <span className = "numDisplay">{this.state.minesTagged}</span>
             </span>
             
           </div>
