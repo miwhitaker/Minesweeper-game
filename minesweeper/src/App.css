@@ -25,6 +25,15 @@ header {
   margin: 3px 3px
 }
 
+.restart {
+  background-color: aqua;
+  box-shadow: #282c34;
+  cursor: pointer;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto
+}
+
 .App {
   text-align: center;
 }
