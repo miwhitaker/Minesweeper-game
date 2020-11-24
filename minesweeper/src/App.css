@@ -6,42 +6,56 @@ header {
   text-align: center;
 }
 
+body {
+  background-image: url(images/background1.jpg);
+  width: 100%
+}
+
 .gameContainer {
-  width: 175px;
+  width: 350px;
   margin-left: auto;
-  margin-right: auto
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 5px
+}
+
+.gameHeader {
+  display: flex;
+  justify-content: space-around;
   
 }
 
-.gameheader {
-  display: flex;
-  justify-content: space-between
+.scoreCount {
+  display: inline-block;
 }
 
 .numDisplay {
   color: yellow;
   background-color: black;
-  border: 1px solid black;
-  margin: 3px 3px
+  border: 1px solid blue;
+  padding: 3px 6px;
+  text-align: center
 }
 
 .restart {
   background-color: aqua;
-  box-shadow: #282c34;
+  box-shadow: 3px 3px 3px #282c34;
+  border-radius: 10px;
   cursor: pointer;
+  width: 80px;
+  height: 40px;
   text-align: center;
+  margin-top: 10px;
   margin-left: auto;
-  margin-right: auto
+  margin-right: auto;
+  font-size: 1.1rem;
 }
 
-.App {
-  text-align: center;
+.menu {
+  display: flex;
+  justify-content: flex-end
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

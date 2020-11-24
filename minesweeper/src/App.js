@@ -38,16 +38,14 @@ function findNeighbors(x, y, max) {
 function randomNumber(max) {
   let randArr = []
   while(randArr.length < max) {
-    const x = Math.floor(Math.random()* max) ;
-    const y = Math.floor(Math.random()* max) ;
-    const check = [x, y]
+    const x = Math.floor(Math.random() * 10) ;
+    const y = Math.floor(Math.random() * 10) ;
     randArr.push([x, y])
-    for(i = 0; i <= (randArr.length - 2); i++) {
-      if(randArr[i] === check) 
+    for(let i = 0; i <= (randArr.length - 2); i++) {
+      if(randArr[i][0] === x && randArr[i][1] === y)
         {randArr.pop()}
     }
   }
-  console.log(randArr)
   return randArr
 }
 
@@ -69,30 +67,29 @@ class App extends Component {
     const stateArr = []
     const tempArr = []
 
-    for(let i = 0; i < 5; i++) {
+    for(let i = 0; i < 10; i++) {
       tempArr.push(JSON.parse(JSON.stringify(winThing)));
       thing.push(JSON.parse(JSON.stringify('initial')));
       dummy.push(0)
     }
 
-    for(let j = 0; j < 5; j++) {
+    for(let j = 0; j < 10; j++) {
       stateArr[j] = JSON.parse(JSON.stringify(tempArr));
       mode[j] = JSON.parse(JSON.stringify(thing));
       numNearMine[j] = JSON.parse(JSON.stringify(dummy))
     }
     
-    const mines = randomNumber(5)
+    const mines = randomNumber(10)
     for (let k = 0; k < mines.length; k++) {
       const val1 = mines[k][0];
       const val2 = mines[k][1];
       stateArr[val1][val2].isMine = true
-      
     }
     
     for (let q = 0; q < mines.length; q++) {
       const val1 = mines[q][0];
       const val2 = mines[q][1];
-      const values = findNeighbors(val1, val2, 4)
+      const values = findNeighbors(val1, val2, 9)
       for (let t = 0; t < values.length; t++) {
         const a = values[t][0];
         const b = values[t][1];
@@ -106,8 +103,9 @@ class App extends Component {
                   mode: mode, 
                   numMines: numNearMine, 
                   minesTagged: 0,
+                  totalMines: 10,
                   winState: 0}
-    
+
 }   //end of constructor
   
   handleClick(row, col) {
@@ -134,7 +132,7 @@ class App extends Component {
     this.setState({cells: this.state.cells, mode: this.state.mode})
     
     if (this.state.mode[row][col] === 'empty') {
-      const values = findNeighbors(row, col, 4)
+      const values = findNeighbors(row, col, 9)
       for (let num = 0; num < values.length; num++) {
         const val1 = values[num][0]
         const val2 = values[num][1]
@@ -153,8 +151,6 @@ class App extends Component {
     if (this.victoryConditions() === true) {
       this.setState({winState: 1})
     } 
-
-
   }   //end of handleClick
 
   rtClick(row, col) {
@@ -181,13 +177,17 @@ class App extends Component {
     this.setState({cells: this.state.cells, 
                     mode: this.state.mode, 
                     minesTagged: this.state.minesTagged})
-    
-    
   }   //end of rtClick
 
+  handleChange(value) {
+    prompt("This will reset the current game. Are you sure?")
+    this.setState({totalMines: parseInt(value)})
+    this.restart(parseInt(value))
+  }
+
   victoryConditions() {
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
         if(this.state.cells[i][j].isMine === false 
         && this.state.cells[i][j].isClicked ===false) 
           {return false}
@@ -197,8 +197,8 @@ class App extends Component {
   }   //end of victory conditions
 
   youLost() {
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
         if(this.state.cells[i][j].isMine === true 
           && this.state.cells[i][j].isClicked === false) {
             // eslint-disable-next-line
@@ -211,11 +211,11 @@ class App extends Component {
       }
     }
     this.setState({cells: this.state.cells, mode: this.state.mode, winState: 2})
-  }
+  }   //end of youLost
 
-  restart() {
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
+  restart(number = 10) {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
         // eslint-disable-next-line
         this.state.cells[i][j].isMine = false 
         // eslint-disable-next-line
@@ -228,18 +228,21 @@ class App extends Component {
         this.state.numMines[i][j] = 0
       }
     }
+
     this.setState({
       cells: this.state.cells,
       mode: this.state.mode,
       numMines: this.state.numMines, 
       minesTagged: 0,
+      totalMines: number,
       winState: 0
     })
 
-    const mines = randomNumber(5)
+    console.log(this.state)
+    const mines = randomNumber(parseInt(this.state.totalMines))
     for (let k = 0; k < mines.length; k++) {
-      const val1 = mines[k][0];
-      const val2 = mines[k][1];
+      const val1 = mines[k][0]
+      const val2 = mines[k][1]
       // eslint-disable-next-line
       this.state.cells[val1][val2].isMine = true
     }
@@ -247,7 +250,7 @@ class App extends Component {
     for (let q = 0; q < mines.length; q++) {
       const val1 = mines[q][0];
       const val2 = mines[q][1];
-      const values = findNeighbors(val1, val2, 4)
+      const values = findNeighbors(val1, val2, 9)
       for (let t = 0; t < values.length; t++) {
         const a = values[t][0];
         const b = values[t][1];
@@ -268,24 +271,32 @@ class App extends Component {
     return(
       <div className = "gameContainer">
         <div className = "gameHeader">
-          <div className = "scoreCount">
-            <span>Mines
-              <span className = "numDisplay">5</span>
-            </span>
-            
+          <div className = "scoreCount">Mines
+            <div className = "numDisplay">{this.state.totalMines}</div>
           </div>
-          <div className = "scoreCount">
-            <span>Mines Tagged:
-              <span className = "numDisplay">{this.state.minesTagged}</span>
-            </span>
-            
+          <div className = "scoreCount">Marked
+            <div className = "numDisplay">{this.state.minesTagged}</div>
           </div>
         </div>
         <Board handleClick = {this.handleClick} 
             rtClick = {this.rtClick}
             displayMode = {this.state.mode}
             numMines = {this.state.numMines} />
-        <button className = "restart" onClick = {() => this.restart()}>Restart</button>
+        <div className = "menu">
+          <button className = "restart" onClick = {() => this.restart(this.state.totalMines)}>Restart</button>
+          
+            <figure>
+              <figcaption>Difficulty</figcaption>
+              <select name = "difficulty" 
+                      value = {this.state.value}
+                      onChange = {(event) => this.handleChange(event.target.value)}>
+                <option value = '10'>Easy</option>
+                <option value = '20'>Not Easy</option>
+                <option value = '30'>Impossible</option>
+              </select>
+            </figure>
+          
+        </div>
         <div>
           {this.state.winState > 0 ? this.state.winState === 1 ? 'You win': 'You lose' : ''}
         </div>

@@ -27,7 +27,7 @@ export default function Cell(props) {
       return (
         <button 
           key = {counter()}
-          className = {props.displayMode}
+          className = {props.displayMode + " color" + props.numMines}
           onContextMenu = {(e) => e.preventDefault()}>
             {props.numMines}
         </button>   )
@@ -38,6 +38,7 @@ export default function Cell(props) {
         <button 
           key = {counter()}
           className = {props.displayMode}
+          onClick = {() => props.handleClick(props.row, props.col)}
           onContextMenu = {(e) =>  e.preventDefault()}>
         </button>  )
     }

@@ -1,7 +1,7 @@
 .initial, .gameover {
     height: 35px;
     width: 35px;
-    background-color: red;
+    background-color:darkslategray;
     cursor: pointer
   }
 
@@ -16,7 +16,7 @@
 .rtClicked {
     height: 35px;
     width: 35px;
-    background-color: goldenrod;
+    background-color: whitesmoke;
     cursor: pointer;
     background-image: url("../images/crosshair.png")
 }
@@ -33,4 +33,36 @@
     width: 35px;
     background-color: whitesmoke;
     background-image: url("../images/bomb.png")
+}
+
+.color1 {
+    color: red;
+}
+
+.color2 {
+    color: green;
+}
+
+.color3 {
+    color: blue;
+}
+
+.color4 {
+    color: indigo;
+}
+
+.color5 {
+    color: violet;
+}
+
+.color6 {
+    color: orange;
+}
+
+.color7 {
+    color: yellowgreen;
+}
+
+.color8 {
+    color: dodgerblue;
 }

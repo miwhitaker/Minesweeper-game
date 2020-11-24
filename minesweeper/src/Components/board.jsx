@@ -4,7 +4,7 @@ import Row from './row';
 
 export default function Board(props) {
   let array = []
-  for(let j = 0; j < 5; j++) {
+  for(let j = 0; j < 10; j++) {
       array.push(<Row key = {j}
                     row = {j} 
                     handleClick = {props.handleClick} 
