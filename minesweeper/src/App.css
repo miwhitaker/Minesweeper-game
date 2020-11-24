@@ -27,6 +27,7 @@ body {
 
 .scoreCount {
   display: inline-block;
+  font-weight: 500;
 }
 
 .numDisplay {
@@ -38,7 +39,7 @@ body {
 }
 
 .restart {
-  background-color: aqua;
+  background-color: #187795;
   box-shadow: 3px 3px 3px #282c34;
   border-radius: 10px;
   cursor: pointer;
@@ -56,6 +57,22 @@ body {
   justify-content: flex-end
 }
 
+figure {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+figcaption {
+  margin-right:5px;
+  font-weight: 500;
+}
+
+.message {
+  font-size: 2rem;
+  color: red;
+  text-align: center;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

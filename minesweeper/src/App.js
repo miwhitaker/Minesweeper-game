@@ -105,9 +105,13 @@ class App extends Component {
                   minesTagged: 0,
                   totalMines: 10,
                   winState: 0}
-
-}   //end of constructor
+  }   //end of constructor
   
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.totalMines !== this.state.totalMines) {
+      this.restart(this.state.totalMines)}
+  }
+
   handleClick(row, col) {
     if (this.state.cells[row][col].isRtClicked === true)
       {return}
@@ -180,9 +184,10 @@ class App extends Component {
   }   //end of rtClick
 
   handleChange(value) {
-    prompt("This will reset the current game. Are you sure?")
+    const gameReset = window.confirm("This will reset the current game. Are you sure?")
+    if(!gameReset) {return}
+
     this.setState({totalMines: parseInt(value)})
-    this.restart(parseInt(value))
   }
 
   victoryConditions() {
@@ -284,21 +289,19 @@ class App extends Component {
             numMines = {this.state.numMines} />
         <div className = "menu">
           <button className = "restart" onClick = {() => this.restart(this.state.totalMines)}>Restart</button>
-          
-            <figure>
-              <figcaption>Difficulty</figcaption>
-              <select name = "difficulty" 
-                      value = {this.state.value}
-                      onChange = {(event) => this.handleChange(event.target.value)}>
-                <option value = '10'>Easy</option>
-                <option value = '20'>Not Easy</option>
-                <option value = '30'>Impossible</option>
-              </select>
-            </figure>
-          
+          <figure>
+            <figcaption>Difficulty:</figcaption>
+            <select name = "difficulty" 
+                    value = {this.state.value}
+                    onChange = {(event) => this.handleChange(event.target.value)}>
+              <option value = '10'>Easy</option>
+              <option value = '15'>Not Easy</option>
+              <option value = '20'>Impossible</option>
+            </select>
+          </figure>
         </div>
-        <div>
-          {this.state.winState > 0 ? this.state.winState === 1 ? 'You win': 'You lose' : ''}
+        <div className = "message">
+          {this.state.winState > 0 ? this.state.winState === 1 ? 'You Win': 'You Lose' : ''}
         </div>
       </div>  
     )}
